@@ -39,5 +39,6 @@
   </div>
   <script type="text/javascript" src="./script/getDetail.js"></script>
   <script data-main="./script/slide/main" src="script/slide/require.js"></script>
+  </script>
 </body>
 </html>

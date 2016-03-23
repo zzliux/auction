@@ -26,7 +26,7 @@ if($_GET['f'] === 'getAllItem'){
 	$count = $t[0];
 	$out['totalPages'] = ceil($count/9);
 	$out['currentPage'] = intval($_GET['currentPage']);
-	$r = $db->selectGoodsByCategoryId($_GET['categoryId'],$out['currentPage']-1,9);
+	$r = $db->selectGoodsByCategoryId($_GET['categoryId'],($out['currentPage']-1)*9,9);
 	$out['category']['name'] = $r[0]['category'];
 	$j = 0;
 	foreach ($r as $k => $v) {
@@ -64,12 +64,9 @@ if($_GET['f'] === 'getAllItem'){
 	);
 	$imgArr = explode(',', $auctionMeta['imgUrl']);
 	$i = 1;
-	$out['auctionItem']['imgs']['path1'] = '';
-	$out['auctionItem']['imgs']['path2'] = '';
-	$out['auctionItem']['imgs']['path3'] = '';
 	foreach ($imgArr as $v) {
 		if($v == '') continue;
-		$out['auctionItem']['imgs']['path'.$i++] = str_replace('thumb/', '', $v);
+		$out['auctionItem']['imgs'][$i++] = str_replace('thumb/', '', $v);
 	}
 	$i = 0;
 	$commentsMeta = array();
