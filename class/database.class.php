@@ -179,7 +179,8 @@ class database extends mysqli {
 	* @return mixed
 	*/
 	function selectGoodById($id){
-		$stmt = $this->prepare('SELECT * FROM `goods_info` WHERE `id` = ? LIMIT 1');
+	/*
+	$stmt = $this->prepare('SELECT * FROM `goods_info` WHERE `id` = ? LIMIT 1');
 		$stmt->bind_param('i',$a);
 		$a = $id;
 		$stmt->execute();
@@ -198,6 +199,23 @@ class database extends mysqli {
 			);
 		}else{
 			$stmt->close();
+			return false;
+		}
+		*/
+		$id = intval($id);
+		$r = $this->query('SELECT * FROM `goods_info` WHERE `id` = '.$id.' LIMIT 1');
+		if($row = $r->fetch_array()){
+			return array(
+				'id'                => $row[0],
+				'name'              => $row[1],
+				'category'          => $row[2],
+				'description'       => $row[3],
+				'donorInfo'         => $row[4],
+				'status'            => $row[5],
+				'transactionAmount' => $row[6],
+				'imgUrl'            => $row[7],
+			);
+		}else{
 			return false;
 		}
 	}
