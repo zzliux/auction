@@ -63,7 +63,7 @@ if($_GET['f'] === 'getAllItem'){
 		'donor' => $auctionMeta['donorInfo'],
 	);
 	$imgArr = explode(',', $auctionMeta['imgUrl']);
-	$i = 1;
+	$i = 0;
 	foreach ($imgArr as $v) {
 		if($v == '') continue;
 		$out['auctionItem']['imgs'][$i++] = str_replace('thumb/', '', $v);

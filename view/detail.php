@@ -17,7 +17,7 @@
   <!--需要返回的数据：-->
   <!--拍品信息（name,img,summary,donor）-->
   <!--评论：评论人（头像，昵称），评论内容-->
-  <div class="content" ng-app ="auctionItem" ng-controller="showDetail">
+  <div id="auctionItem" class="content" ng-app ="auctionItem" ng-controller="showDetail">
     <h4>{{auctionItem.name}}</h4>
     <hr/>
     <div class="detail">
@@ -37,8 +37,7 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="./script/slide.js"></script>
   <script type="text/javascript" src="./script/getDetail.js"></script>
-  <script data-main="./script/slide/main" src="script/slide/require.js"></script>
-  </script>
 </body>
 </html>
