@@ -1,6 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin:*");
 require_once(__DIR__.'/class/database.class.php');
+require_once(__DIR__.'/functions/common.func.php');
 if($_GET['f'] === 'getAllItem'){
 	$db = new database();
 	$r = $db->selectGoods(0,99999999);
@@ -54,9 +55,7 @@ if($_GET['f'] === 'getAllItem'){
 	$gid = $_GET['id'];
 	$db = new database();
 	$auctionMeta = $db->selectGoodById($gid);
-	// var_dump($auctionMeta);
 	$commentsMeta = $db->selectComments($gid);
-	// var_dump($commentsMeta);
 	$out['auctionItem'] = array(
 		'name' => $auctionMeta['name'],
 		'summary' => $auctionMeta['description'],
@@ -69,13 +68,12 @@ if($_GET['f'] === 'getAllItem'){
 		$out['auctionItem']['imgs'][$i++] = str_replace('thumb/', '', $v);
 	}
 	$i = 0;
-	$commentsMeta = array();
 	foreach ($commentsMeta as $v) {
-		$user = json_decode($v['user_info_meta']);
-		$out['comments'][$i]['user']['img'] = $user['headimgurl'];
 		$out['comments'][$i]['user']['name'] = $v['name'];
+		$out['comments'][$i]['user']['img'] = $v['img'];
 		$out['comments'][$i++]['content'] = $v['content'];
 	}
+	$myInfo = json_decode(getUserInfo($_COOKIE['auction_ssid']));
+	$out['myInfo'] = $myInfo;
 	echo json_encode($out);
 }
-?>

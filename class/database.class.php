@@ -165,10 +165,16 @@ class database extends mysqli {
 	}
 
 	function selectComments($gid){
-		$gid = $this->real_escape_string($gid);
-		$r = $this->query('SELECT * FROM `goods_comments` WHERE `gid` = '.$gid);
+		//使用inner join进行联表查询
+		//SELECT * FROM `goods_comments` INNER JOIN `wx_user_info` WHERE `goods_comments`.`uid` = `wx_user_info`.`uid`
+		$gid = intval($gid);
+		$r = $this->query("SELECT * FROM `goods_comments` INNER JOIN `wx_user_info` WHERE `goods_comments`.`uid` = `wx_user_info`.`uid` AND `gid` = {$gid}");
+		$i=0;
 		while($row = $r->fetch_assoc()){
-			$res[] = $row;
+			$t = json_decode($row['user_info_meta'],true);
+			$res[$i]['name'] = $t['nickname'];
+			$res[$i]['content'] = $row['content'];
+			$res[$i++]['img'] = $t['headimgurl'];
 		}
 		return $res;
 	}

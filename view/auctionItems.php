@@ -20,7 +20,7 @@
     <h4>{{category.name}}</h4>
     <hr/>
     <div class="auction" ng-repeat="auction in category.auctions">
-      <a href="./detail.php?cid={{auction.id}}">
+      <a href="./detail.php?gid={{auction.id}}">
         <img src="{{auction.img.path1}}" alt="{{auction.name}}">
         <span>{{auction.name}}</span>
       </a>
