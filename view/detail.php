@@ -5,12 +5,28 @@
   var_dump($_POST);
   if(isset($_POST['fun']) && $_POST['fun'] == 'comment'){
     $db = new database();
-    $db->insertComment($_GET['gid'], $_POST['comment']);
+    if(!empty($_POST['comment'])){
+      $db->insertComment($_GET['gid'], htmlentities($_POST['comment']));
+    }else{
+      $errMsg = '评论内容不能为空';
+    }
   }
   if(isset($_POST['fun']) && $_POST['fun'] == 'auction'){
     if(preg_match('/^1[34578]\d{9}$/', $_POST['phoneNumber'])){
-      if(preg_match('/^\d+.?\d+$/', $_POST['pirce'])){
-
+      if(preg_match('/^\d+(\.?\d+)?$/', $_POST['myPrice'])){
+        if(!empty($_POST['name'])){
+          $maxInfo = getMaxPriceInfo($_GET['gid']);
+          if($_POST['myPrice'] > $maxInfo['price']){
+            $db = new database();
+            $db->insertAuctionPrice($_POST['myPrice'], $_POST['name'], $_POST['phoneNumber'], $_GET['gid']);
+          }else{
+            $errMsg = '不能低于或等于最大竞拍价';
+          }
+        }else{
+          $errMsg = '姓名不能为空';
+        }
+      }else{
+        $errMsg = '价钱格式不正确';
       }
     }else{
       $errMsg = '手机号码格式不正确';
@@ -45,6 +61,11 @@
       <div>拍品拟拍价：<span>{{auctionItem.price}}</span></div>
       <div><input type="button" value="我要抢拍" id="order"></div>
     </div>
+    <?php if(isset($errMsg)){ ?>
+    <div class="errMsgBox">
+      <?php echo $errMsg ?>
+    </div>
+    <?php }?>
     <div class="comments">
       <h4>评论</h4>
       <hr>

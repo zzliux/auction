@@ -63,7 +63,7 @@ if($_GET['f'] === 'getAllItem'){
 		'donor'   => $auctionMeta['donorInfo'],
 		'price'   => $acif[0]['price'],
 	);
-	uasort($acif, 'cmp');
+	usort($acif, 'cmp');
 	$out['auctionItem']['topPrice'] = $acif[0]['price'];
 	$imgArr = explode(',', $auctionMeta['imgUrl']);
 	$i = 0;

@@ -54,6 +54,17 @@ function insertDonorInfo($wx_name,$money,$time,$realName='',$info=''){
 	file_put_contents(__DIR__.'/../log/donor_info_'.date('Y').'.csv',"{$wx_name},{$money},{$time},{$did}\n",FILE_APPEND);
 }
 
+function getMaxPriceInfo($gid){
+	$db = new database();
+	$r = $db->selectAuctionPrice($gid);
+	if(!is_array($r)) return false;
+	$max = $r[0];
+	for($cnt=count($r),$i=1;$i<$cnt;$i++){
+		if($max['price']<$r['price']) $max = $r;
+	}
+	return $max;
+}
+
 
 //随机盐
 function randomSalt(){
@@ -148,7 +159,6 @@ function getUserInfo($ssid){
 		return false;
 	}
 }
-
 
 
 /*

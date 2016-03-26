@@ -244,18 +244,44 @@ class database extends mysqli {
 		$r = $this->query('SELECT * FROM `goods_info` WHERE `id` = '.$id.' LIMIT 1');
 		if($row = $r->fetch_array()){
 			return array(
-				'id'                => $row[0],
-				'name'              => $row[1],
-				'category'          => $row[2],
-				'description'       => $row[3],
-				'donorInfo'         => $row[4],
-				'status'            => $row[5],
+				'id'           => $row[0],
+				'name'         => $row[1],
+				'category'     => $row[2],
+				'description'  => $row[3],
+				'donorInfo'    => $row[4],
+				'status'       => $row[5],
 				'auction_info' => $row[6],
-				'imgUrl'            => $row[7],
+				'imgUrl'       => $row[7],
 			);
 		}else{
 			return false;
 		}
+	}
+
+	function selectAuctionPrice($gid){
+		$gid = intval($gid);
+		$r = $this->query("SELECT `auction_info` FROM `goods_info` WHERE `id` = {$gid}");
+		if($r && $row = $r->fetch_assoc()){
+			return json_decode($row['auction_info'],true);
+		}else{
+			return false;
+		}
+	}
+
+	function insertAuctionPrice($price, $name, $phoneNumber, $gid){
+		$r = $this->selectAuctionPrice($gid);
+		if(!is_array($r)) return false;
+		$r[] = array(
+			'price'       => $price,
+			'user'        => $name,
+			'phoneNumber' => $phoneNumber,
+		);
+		$r = json_encode($r);
+		$stmt = $this->prepare('UPDATE `goods_info` SET `auction_info` = ? WHERE `id` = ?');
+		$stmt->bind_param('ss',$a,$b);
+		$a = $r; $b = $gid;
+		$stmt->execute();
+		return true;
 	}
 
 	/**

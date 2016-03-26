@@ -7,6 +7,7 @@ if(isset($_POST['name']) && $_POST['name']){
   $name = htmlentities($_POST['name']);
   $cate = htmlentities($_POST['cate']);
   $dono = htmlentities($_POST['donor']);
+  $pric = htmlentities($_POST['price']);
   $summ = htmlentities($_POST['summary']);
   $imgUrl = '';
   $time = time();
@@ -25,6 +26,16 @@ if(isset($_POST['name']) && $_POST['name']){
   }
   $db = new database();
   if($flag && $db->insertGood($name,$cate, $summ, $dono,101,$imgUrl)){
+    $stmt = $db->prepare('UPDATE `goods_info` SET `auction_info` = ? WHERE `name` = ?');
+    $stmt->bind_param('ss',$a,$b);
+    $rb[] = array(
+      'price' => floatval($pric),
+      'user' => 'admin',
+      'phoneNumber' => '00000000000'
+    );
+    $a = json_encode($rb); $b = $name;
+    $stmt->execute();
+    $stmt->close();
     $out = '添加成功';
   }else{
     $out = '添加失败';
@@ -67,6 +78,7 @@ if(isset($_POST['name']) && $_POST['name']){
             <label for="name">&emsp;名称：</label><input type="text" name="name" value="<?php if(isset($name)) echo $name ?>"><br/>
             <label for="cate">&emsp;类别：</label><input type="text" name="cate" value="<?php if(isset($cate)) echo $cate ?>"><br/>
             <label for="donor">捐赠人：</label><input type="text" name="donor" value="<?php if(isset($dono)) echo $dono ?>"><br/>
+            <label for="price">拟拍价：</label><input type="text" name="price" value="<?php if(isset($pric)) echo $pric ?>"><br/>
             <label for="summary">&emsp;简介：</label>
             <textarea name="summary" id="summary"><?php if($flag) echo $summ ?></textarea><br/>
             <label for="img1">&emsp;图片1：</label><input name="img1" type="file">
