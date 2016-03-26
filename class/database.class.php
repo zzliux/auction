@@ -179,6 +179,17 @@ class database extends mysqli {
 		return $res;
 	}
 
+	function insertComment($gid,$content){
+		if($userInfo = getUserInfo($_COOKIE['auction_ssid'])){
+			$gid = intval($gid);
+			$content = $this->real_escape_string($content);
+			$$this->query("INSERT INTO `goods_comments`(`gid`,`uid`,`content`)VALUES({$gid},{$userInfo['uid']},'{$content}')");
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	/**
 	* 通过id查找拍品
 	* @param int $id 拍品id

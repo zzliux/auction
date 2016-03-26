@@ -73,7 +73,7 @@ if($_GET['f'] === 'getAllItem'){
 		$out['comments'][$i]['user']['img'] = $v['img'];
 		$out['comments'][$i++]['content'] = $v['content'];
 	}
-	$myInfo = json_decode(getUserInfo($_COOKIE['auction_ssid']));
+	$myInfo = json_decode(getUserInfo($_COOKIE['auction_ssid']),true);
 	$out['myInfo'] = $myInfo;
 	echo json_encode($out);
 }
