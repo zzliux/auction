@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- 主机: localhost
--- 生成日期: 2016-03-26 14:51:44
--- 服务器版本: 5.5.44-0ubuntu0.14.04.1
--- PHP 版本: 5.5.9-1ubuntu4.14
+-- Host: 127.0.0.1
+-- Generation Time: 2016-03-26 12:58:02
+-- 服务器版本： 5.6.17
+-- PHP Version: 5.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- 数据库: `wx_charitysale`
+-- Database: `wx_charitysale`
 --
 CREATE DATABASE IF NOT EXISTS `wx_charitysale` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `wx_charitysale`;
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `goods_categories_info` (
   PRIMARY KEY (`cateid`),
   KEY `name` (`name`),
   KEY `name_2` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=16 ;
 
 --
 -- 插入之前先把表清空（truncate） `goods_categories_info`
@@ -110,6 +110,8 @@ TRUNCATE TABLE `goods_categories_info`;
 --
 
 INSERT INTO `goods_categories_info` (`cateid`, `name`) VALUES
+(14, '测试'),
+(15, '生活'),
 (10, '类别1'),
 (11, '类别2');
 
@@ -127,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `goods_comments` (
   `content` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `gid` (`gid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=14 ;
 
 --
 -- 插入之前先把表清空（truncate） `goods_comments`
@@ -139,7 +141,19 @@ TRUNCATE TABLE `goods_comments`;
 --
 
 INSERT INTO `goods_comments` (`id`, `gid`, `uid`, `content`) VALUES
-(1, 42, 5, '这是评论');
+(1, 42, 5, '这是评论'),
+(2, 42, 5, '评论测试'),
+(3, 42, 5, '评论测试'),
+(4, 42, 5, '评论测试'),
+(5, 42, 5, '评论测试'),
+(6, 42, 5, '评论测试'),
+(7, 42, 5, '评论测试'),
+(8, 42, 5, '评论测试'),
+(9, 42, 5, '评论测试'),
+(10, 42, 5, '评论测试'),
+(11, 42, 5, '评论测试'),
+(12, 42, 5, '评论测试'),
+(13, 42, 5, '112121323');
 
 -- --------------------------------------------------------
 
@@ -155,10 +169,10 @@ CREATE TABLE IF NOT EXISTS `goods_info` (
   `description` longtext NOT NULL COMMENT '商品简介、描述之类',
   `donorinfo` varchar(255) NOT NULL DEFAULT '' COMMENT '捐赠人信息',
   `status` int(3) NOT NULL DEFAULT '0' COMMENT '商品状态',
+  `auction_info` text NOT NULL,
   `imgurl` text NOT NULL,
-  `price` float NOT NULL DEFAULT '0' COMMENT '拟拍价',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=48 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=53 ;
 
 --
 -- 插入之前先把表清空（truncate） `goods_info`
@@ -169,18 +183,20 @@ TRUNCATE TABLE `goods_info`;
 -- 转存表中的数据 `goods_info`
 --
 
-INSERT INTO `goods_info` (`id`, `name`, `category`, `description`, `donorinfo`, `status`, `imgurl`, `price`) VALUES
-(37, '拍品1', '类别1', '没有简介', '张三', 101, 'image/auction/thumb/1458654910_1.jpg,', 0),
-(38, '拍品2', '类别2', '没有简介2', '李四', 101, 'image/auction/thumb/1458655038_1.jpg,', 0),
-(39, '拍品3', '类别1', '这个是个好东西\r\n今天的这个东西是个好东西', '张三', 101, 'image/auction/thumb/1458722728_1.jpg,', 0),
-(40, '金龙鱼', '类别1', '食用油。。', '张三', 101, 'image/auction/thumb/1458723392_1.jpg,', 0),
-(41, '救生圈', '类别1', '救生圈还有什么好说的', '张三', 101, 'image/auction/thumb/1458723427_1.jpg,image/auction/thumb/1458723427_2.jpg,', 0),
-(42, '自行车', '类别1', '嗯', '张三', 101, 'image/auction/thumb/1458723465_1.jpg,', 0),
-(43, '烤炉罩布', '类别1', '好嗯', '张三', 101, 'image/auction/thumb/1458723529_1.jpg,', 0),
-(44, '手表', '类别1', '好嗯', '张三', 101, 'image/auction/thumb/1458723540_1.jpg,', 0),
-(45, '手机', '类别1', '好嗯', '张三', 101, 'image/auction/thumb/1458723559_1.jpg,', 0),
-(46, '宠物用饮水机', '类别1', '好嗯', '张三', 101, 'image/auction/thumb/1458723603_1.jpg,', 0),
-(47, '玩具笔', '类别1', '好嗯', '张三', 101, 'image/auction/thumb/1458725113_1.jpg,', 0);
+INSERT INTO `goods_info` (`id`, `name`, `category`, `description`, `donorinfo`, `status`, `auction_info`, `imgurl`) VALUES
+(37, '拍品1', '类别1', '没有简介', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458654910_1.jpg,'),
+(38, '拍品2', '类别2', '没有简介2', '李四', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458655038_1.jpg,'),
+(39, '拍品3', '类别1', '这个是个好东西\r\n今天的这个东西是个好东西', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458722728_1.jpg,'),
+(40, '金龙鱼', '类别1', '食用油。。', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458723392_1.jpg,'),
+(41, '救生圈', '类别1', '救生圈还有什么好说的', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458723427_1.jpg,image/auction/thumb/1458723427_2.jpg,'),
+(42, '自行车', '类别1', '嗯', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"},{"price":"11","user":"\\u5f20\\u4e09","phoneNumber":"13888888888"}]', 'image/auction/thumb/1458723465_1.jpg,'),
+(43, '烤炉罩布', '类别1', '好嗯', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458723529_1.jpg,'),
+(44, '手表', '类别1', '好嗯', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458723540_1.jpg,'),
+(45, '手机', '类别1', '好嗯', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458723559_1.jpg,'),
+(46, '宠物用饮水机', '类别1', '好嗯', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458723603_1.jpg,'),
+(47, '玩具笔', '类别1', '好嗯', '张三', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458725113_1.jpg,'),
+(50, '测试', '测试', '', '测试', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458976136_1.jpg,'),
+(52, '救生圈', '生活', '一个二手救生圈', '这个人', 101, '[{"price":10,"user":"admin","phoneNumber":"00000000000"}]', 'image/auction/thumb/1458993327_3.jpg,');
 
 -- --------------------------------------------------------
 
