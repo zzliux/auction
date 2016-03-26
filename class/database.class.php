@@ -47,6 +47,16 @@ class database extends mysqli {
 	* @return mixed
 	*/
 	function deleteGood($id){
+		$id = intval($id);
+		$r = $this->query('SELECT `imgurl` FROM `goods_info` WHERE `id` = '.$id);
+		$rt = $r->fetch_assoc();
+		$imgArr = explode(',', $rt['imgurl']);
+		foreach ($imgArr as $v) {
+			if($v == '') continue;
+			$v = __DIR__.'/../view/'.$v;
+			var_dump($v);
+			$v = str_replace('/thumb', '', $v);
+		}
 		$stmt = $this->prepare('DELETE FROM `goods_info` WHERE `id` = ?');
 		$stmt->bind_param('i',$a);
 		$a = $id;
@@ -67,6 +77,16 @@ class database extends mysqli {
 			if($row[0] == 1){
 				$this->query('DELETE FROM `goods_categories_info` WHERE `name` = (SELECT `category` FROM `goods_info` WHERE `name` = \''.$name.'\' LIMIT 1)');
 			}
+		}
+		$r = $this->query('SELECT `imgurl` FROM `goods_info` WHERE `name` = \''.$name.'\'');
+		$rt = $r->fetch_assoc();
+		$imgArr = explode(',', $rt['imgurl']);
+		foreach ($imgArr as $v) {
+			if($v == '') continue;
+			$v = __DIR__.'/../view/'.$v;
+			unlink($v);
+			$v = str_replace('/thumb', '', $v);
+			unlink($v);
 		}
 		$stmt = $this->prepare('DELETE FROM `goods_info` WHERE `name` = ?');
 		$stmt->bind_param('s',$a);
@@ -110,14 +130,14 @@ class database extends mysqli {
 		$res = $this->query('SELECT * FROM `goods_info` WHERE `status` = '.$status.' ORDER BY `id` '.($desc?'DESC':'ASC') .' LIMIT '.$start.', '.$length.' ');
 		while($row = $res->fetch_array()){
 			$r[] = array(
-				'id'                => $row[0],
-				'name'              => $row[1],
-				'category'          => $row[2],
-				'description'       => $row[3],
-				'donorInfo'         => $row[4],
-				'status'            => $row[5],
-				'transactionAmount' => $row[6],
-				'imgUrl'            => $row[7],
+				'id'           => $row[0],
+				'name'         => $row[1],
+				'category'     => $row[2],
+				'description'  => $row[3],
+				'donorInfo'    => $row[4],
+				'status'       => $row[5],
+				'auction_info' => $row[6],
+				'imgUrl'       => $row[7],
 			);
 		}
 		return $r;
@@ -168,7 +188,7 @@ class database extends mysqli {
 		//使用inner join进行联表查询
 		//SELECT * FROM `goods_comments` INNER JOIN `wx_user_info` WHERE `goods_comments`.`uid` = `wx_user_info`.`uid`
 		$gid = intval($gid);
-		$r = $this->query("SELECT * FROM `goods_comments` INNER JOIN `wx_user_info` WHERE `goods_comments`.`uid` = `wx_user_info`.`uid` AND `gid` = {$gid}");
+		$r = $this->query("SELECT * FROM `goods_comments` INNER JOIN `wx_user_info` WHERE `goods_comments`.`uid` = `wx_user_info`.`uid` AND `gid` = {$gid} ORDER BY `id` DESC");
 		$i=0;
 		while($row = $r->fetch_assoc()){
 			$t = json_decode($row['user_info_meta'],true);
@@ -181,9 +201,10 @@ class database extends mysqli {
 
 	function insertComment($gid,$content){
 		if($userInfo = getUserInfo($_COOKIE['auction_ssid'])){
+			$userInfo = json_decode($userInfo,true);
 			$gid = intval($gid);
 			$content = $this->real_escape_string($content);
-			$$this->query("INSERT INTO `goods_comments`(`gid`,`uid`,`content`)VALUES({$gid},{$userInfo['uid']},'{$content}')");
+			$this->query("INSERT INTO `goods_comments`(`gid`,`uid`,`content`)VALUES({$gid},{$userInfo['uid']},'{$content}')");
 			return true;
 		}else{
 			return false;
@@ -229,7 +250,7 @@ class database extends mysqli {
 				'description'       => $row[3],
 				'donorInfo'         => $row[4],
 				'status'            => $row[5],
-				'transactionAmount' => $row[6],
+				'auction_info' => $row[6],
 				'imgUrl'            => $row[7],
 			);
 		}else{

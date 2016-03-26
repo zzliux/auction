@@ -13,7 +13,7 @@ if(isset($_POST['name']) && $_POST['name']){
   for($i=1;$i<4;$i++){
     if($_FILES['img'.$i]['error']) continue;
     if(!preg_match('/jpg|png|gif/', $_FILES['img'.$i]['name'], $r)) {
-      $flag = true;
+      $flag = false;
       echo '图片'.$_FILES['img'.$i]['name'].'格式不正确';
       continue;
     }
@@ -24,7 +24,7 @@ if(isset($_POST['name']) && $_POST['name']){
     new resizeimage($url, '200', '200', '0', $thumbUrl);
   }
   $db = new database();
-  if($db->insertGood($name,$cate, $summ, $dono,101,$imgUrl)){
+  if($flag && $db->insertGood($name,$cate, $summ, $dono,101,$imgUrl)){
     $out = '添加成功';
   }else{
     $out = '添加失败';
@@ -64,9 +64,9 @@ if(isset($_POST['name']) && $_POST['name']){
         <hr>
         <form  action="" method="post" enctype="multipart/form-data">
           <fieldset class="formField">
-            <label for="name">&emsp;名称：</label><input type="text" name="name" value="<?php if($flag) echo $name ?>"><br/>
-            <label for="cate">&emsp;类别：</label><input type="text" name="cate" value="<?php if($flag) echo $cate ?>"><br/>
-            <label for="donor">捐赠人：</label><input type="text" name="donor" value="<?php if($flag) echo $dono ?>"><br/>
+            <label for="name">&emsp;名称：</label><input type="text" name="name" value="<?php if(isset($name)) echo $name ?>"><br/>
+            <label for="cate">&emsp;类别：</label><input type="text" name="cate" value="<?php if(isset($cate)) echo $cate ?>"><br/>
+            <label for="donor">捐赠人：</label><input type="text" name="donor" value="<?php if(isset($dono)) echo $dono ?>"><br/>
             <label for="summary">&emsp;简介：</label>
             <textarea name="summary" id="summary"><?php if($flag) echo $summ ?></textarea><br/>
             <label for="img1">&emsp;图片1：</label><input name="img1" type="file">

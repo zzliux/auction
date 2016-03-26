@@ -56,11 +56,15 @@ if($_GET['f'] === 'getAllItem'){
 	$db = new database();
 	$auctionMeta = $db->selectGoodById($gid);
 	$commentsMeta = $db->selectComments($gid);
+	$acif = json_decode($auctionMeta['auction_info'],true);
 	$out['auctionItem'] = array(
-		'name' => $auctionMeta['name'],
+		'name'    => $auctionMeta['name'],
 		'summary' => $auctionMeta['description'],
-		'donor' => $auctionMeta['donorInfo'],
+		'donor'   => $auctionMeta['donorInfo'],
+		'price'   => $acif[0]['price'],
 	);
+	uasort($acif, 'cmp');
+	$out['auctionItem']['topPrice'] = $acif[0]['price'];
 	$imgArr = explode(',', $auctionMeta['imgUrl']);
 	$i = 0;
 	foreach ($imgArr as $v) {
@@ -68,12 +72,21 @@ if($_GET['f'] === 'getAllItem'){
 		$out['auctionItem']['imgs'][$i++] = str_replace('thumb/', '', $v);
 	}
 	$i = 0;
-	foreach ($commentsMeta as $v) {
-		$out['comments'][$i]['user']['name'] = $v['name'];
-		$out['comments'][$i]['user']['img'] = $v['img'];
-		$out['comments'][$i++]['content'] = $v['content'];
+	if(is_array($commentsMeta)){
+		foreach ($commentsMeta as $v) {
+			$out['comments'][$i]['user']['name'] = $v['name'];
+			$out['comments'][$i]['user']['img'] = $v['img'];
+			$out['comments'][$i++]['content'] = $v['content'];
+		}
 	}
 	$myInfo = json_decode(getUserInfo($_COOKIE['auction_ssid']),true);
 	$out['myInfo'] = $myInfo;
 	echo json_encode($out);
+}
+
+function cmp($a,$b){
+	if($a['price'] == $b['price']){
+		return 0;
+	}
+	return $a['price'] < $b['price'] ? 1 : -1;
 }
