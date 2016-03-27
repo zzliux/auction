@@ -16,7 +16,7 @@ ul{
 ul>li{
   width: 60%;
   margin: 0 auto;
-  padding:.3rem 0;  
+  padding:.3rem 0;
 }
 ul>li:first-child,ul>li:last-child{
   width: 100%;
@@ -79,8 +79,8 @@ nav{
 textarea{
   min-width: 17.5rem;
   max-width: 17.5rem;
-  max-height: 6rem; 
-  min-height: 2rem; 
+  max-height: 6rem;
+  min-height: 2rem;
 }
 fieldset{
     width: 23rem;
@@ -91,7 +91,7 @@ fieldset{
 label{
     margin: .5em 0 .2em
 }
-input[type=text],input[type=password],textarea{ 
+input[type=text],input[type=password],textarea{
     padding: .5em .6em;
     display: inline-block;
     border: 1px solid #ccc;
@@ -122,4 +122,18 @@ input[type=submit]:hover,input[type=button]:hover{
 }
 tbody img{
   width: 5rem;
+}
+table{
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  text-align: center;
+}
+td, th{
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding: .5em 1em;
+    border-width:0 0 1px;
+    border-bottom: 1px solid #cbcbcb;
 }

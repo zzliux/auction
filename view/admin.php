@@ -10,21 +10,32 @@ if(isset($_POST['name']) && $_POST['name']){
   $pric = htmlentities($_POST['price']);
   $summ = htmlentities($_POST['summary']);
   $imgUrl = '';
-  $time = time();
-  for($i=1;$i<4;$i++){
-    if($_FILES['img'.$i]['error']) continue;
-    if(!preg_match('/jpg|png|gif/', $_FILES['img'.$i]['name'], $r)) {
-      $flag = false;
-      echo '图片'.$_FILES['img'.$i]['name'].'格式不正确';
-      continue;
+  if(mb_strlen($name,'utf8')<7){
+    $time = time();
+    for($i=1;$i<4;$i++){
+      if($_FILES['img'.$i]['error']) continue;
+      if(!preg_match('/jpg|png|gif/', $_FILES['img'.$i]['name'], $r)) {
+        $flag = false;
+         $out = '图片'.$_FILES['img'.$i]['name'].'格式不正确';
+        continue;
+      }
+      $url = 'image/auction/'.$time.'_'.$i.'.'.$r[0];
+      $thumbUrl = 'image/auction/thumb/'.$time.'_'.$i.'.'.$r[0];
+      $imgUrl .= $thumbUrl.',';
+      file_put_contents($url, file_get_contents($_FILES['img'.$i]['tmp_name']));
+      new resizeimage($url, '200', '200', '0', $thumbUrl);
     }
-    $url = 'image/auction/'.$time.'_'.$i.'.'.$r[0];
-    $thumbUrl = 'image/auction/thumb/'.$time.'_'.$i.'.'.$r[0];
-    $imgUrl .= $thumbUrl.',';
-    file_put_contents($url, file_get_contents($_FILES['img'.$i]['tmp_name']));
-    new resizeimage($url, '200', '200', '0', $thumbUrl);
+  }else{
+    $flag = false;
+    $out = '名称长度不能超过6';
   }
   $db = new database();
+  $name = $db->real_escape_string($name);
+  $r = $db->query("SELECT 1 FROM `goods_info` WHERE `name` = '{$name}'");
+  if($r->fetch_assoc()) {
+    $flag = false;
+    $out = '不能有重复的名称';
+  }
   if($flag && $db->insertGood($name,$cate, $summ, $dono,101,$imgUrl)){
     $stmt = $db->prepare('UPDATE `goods_info` SET `auction_info` = ? WHERE `name` = ?');
     $stmt->bind_param('ss',$a,$b);
@@ -38,7 +49,7 @@ if(isset($_POST['name']) && $_POST['name']){
     $stmt->close();
     $out = '添加成功';
   }else{
-    $out = '添加失败';
+    $out .= ',添加失败';
   }
 }
 ?><!doctype html>
@@ -80,7 +91,7 @@ if(isset($_POST['name']) && $_POST['name']){
             <label for="donor">捐赠人：</label><input type="text" name="donor" value="<?php if(isset($dono)) echo $dono ?>"><br/>
             <label for="price">拟拍价：</label><input type="text" name="price" value="<?php if(isset($pric)) echo $pric ?>"><br/>
             <label for="summary">&emsp;简介：</label>
-            <textarea name="summary" id="summary"><?php if($flag) echo $summ ?></textarea><br/>
+            <textarea name="summary" id="summary"><?php if(isset($summ)) echo $summ ?></textarea><br/>
             <label for="img1">&emsp;图片1：</label><input name="img1" type="file">
             <label for="img2">&emsp;图片2：</label><input name="img2" type="file">
             <label for="img3">&emsp;图片3：</label><input name="img3" type="file">
