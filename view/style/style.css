@@ -1,6 +1,11 @@
 html{
   font-size: 16px;
-  font-family:"Microsoft YaHei",微软雅黑,"Microsoft JhengHei",SimHei,华文细黑,STHeiti,MingLiu;
+  font-family: 微软雅黑;
+}
+@media (max-width: 360px){
+  html {
+    font-size: 13px;
+  }
 }
 body{
   background-color:#f2f2f2;
@@ -23,7 +28,7 @@ nav{
   margin-bottom: 0.5rem;
 }
 .logo+div>span{
-  font-size: .85rem;
+  font-size: .65rem;
 }
 .content{
   margin: 0.35rem 0.55rem;
@@ -84,9 +89,6 @@ nav{
 }
 .auction img ,.auction span{
   width: 100%;
-}
-.auction img {
-  height: 8rem;
 }
 .auction span {
   display: block;
@@ -195,7 +197,7 @@ input[type=text],input[type=password],textarea{
   padding: .5rem .3rem;
   border-radius: 5px;
   width: 80%;
-  margin: 15% auto 0 auto;
+  margin: 15% auto 0 auto; 
   background-color: #f2f2f2;
   position: relative;
 }

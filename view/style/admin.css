@@ -16,7 +16,7 @@ ul{
 ul>li{
   width: 60%;
   margin: 0 auto;
-  padding:.3rem 0;
+  padding:.3rem 0;  
 }
 ul>li:first-child,ul>li:last-child{
   width: 100%;
@@ -79,8 +79,8 @@ nav{
 textarea{
   min-width: 17.5rem;
   max-width: 17.5rem;
-  max-height: 6rem;
-  min-height: 2rem;
+  max-height: 6rem; 
+  min-height: 2rem; 
 }
 fieldset{
     width: 23rem;
@@ -91,7 +91,7 @@ fieldset{
 label{
     margin: .5em 0 .2em
 }
-input[type=text],input[type=password],textarea{
+input[type=text],input[type=password],textarea{ 
     padding: .5em .6em;
     display: inline-block;
     border: 1px solid #ccc;
@@ -130,10 +130,35 @@ table{
   text-align: center;
 }
 td, th{
-    font-size: inherit;
-    margin: 0;
-    overflow: visible;
-    padding: .5em 1em;
-    border-width:0 0 1px;
-    border-bottom: 1px solid #cbcbcb;
+  font-size: inherit;
+  margin: 0;
+  overflow: visible;
+  padding: .5em 1em;
+  border-width:0 0 1px;
+  border-bottom: 1px solid #cbcbcb;
+}
+#wrap{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.8);
+}
+.bidders{
+  position: absolute;
+  left: 50%;
+  width: 400px;
+  margin-left: -200px;
+  top:10%;
+  z-index: 1;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px #000;
+}
+.bidders td{
+  border-top: 1px solid #cbcbcb;
+}
+.bidders th,.bidders td{
+  border-bottom: none;
 }
