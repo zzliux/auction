@@ -51,7 +51,6 @@ function getData(){
          var scope = angular.element(itemView).scope();
          scope.$apply(function(){
             scope.items = items;
-            console.log(items);
          });
       }else{
          console.error("请求失败：" + xhr.status);

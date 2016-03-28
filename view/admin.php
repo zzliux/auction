@@ -132,6 +132,7 @@ if(isset($_POST['oldPass'])){
               <th>类别</th>
               <th>捐赠人</th>
               <th>简介</th>
+              <th>拟拍价</th>
               <th>竞拍人</th>
               <th>操作</th>
             </tr>
