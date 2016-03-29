@@ -12,11 +12,11 @@ require_once(__DIR__.'/../class/resizeimage.class.php');
 $flag = true;
 $out = '';
 if(isset($_POST['name']) && $_POST['name']){
-  $name = htmlentities($_POST['name']);
-  $cate = htmlentities($_POST['cate']);
-  $dono = htmlentities($_POST['donor']);
-  $pric = htmlentities($_POST['price']);
-  $summ = htmlentities($_POST['summary']);
+  $name = htmlspecialchars($_POST['name']);
+  $cate = htmlspecialchars($_POST['cate']);
+  $dono = htmlspecialchars($_POST['donor']);
+  $pric = htmlspecialchars($_POST['price']);
+  $summ = htmlspecialchars($_POST['summary']);
   $imgUrl = '';
   if(mb_strlen($name,'utf8')<7){
     $time = time();
