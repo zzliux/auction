@@ -84,13 +84,16 @@ function deleteItem(){
   xhr.send(null);
 }
 function showBidder(){
-  var bidder = event.target.parentNode.parentNode.getElementsByTagName('table')[0];
-  var wrap = document.getElementById('wrap');
-  if(wrap.style.display==="none" && bidder.style.display==="none"){
-     wrap.style.display = bidder.style.display = "";
-  }
-  wrap.onclick = function(){
-    this.style.display = "none";
-    bidder.style.display = "none";
-  }
+    var bidder = event.target.parentNode.parentNode.getElementsByTagName('table')[0];
+    var wrap = document.getElementById('wrap');
+    var height = document.body.scrollTop;
+    if(wrap.style.display==="none" && bidder.style.display==="none"){
+       wrap.style.display = bidder.style.display = "";
+       document.body.scrollTop = 0;
+    }
+    wrap.onclick = function(){
+      this.style.display = "none";
+      bidder.style.display = "none";
+      document.scrollTop = height;
+    }
 }
