@@ -148,7 +148,7 @@ if(isset($_POST['oldPass'])){
               <td>{{item.price}}</td><!--改动的地方-->
               <td><input type="button" value="竟拍人" onclick = "showBidder()"></a></td>
               <!--改动的地方-->
-              <td><input type="button" value="删除" onclick = "deleteItem({{item.name}})"></td>
+              <td><input type="button" value="删除" delname="{{item.name}}" onclick = "deleteItem()"></td>
               <!--改动的地方-->
               <td>
                   <table class="bidders" style="display:none">

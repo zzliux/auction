@@ -1,5 +1,6 @@
 <?php
   require_once(__DIR__.'/../functions/common.func.php');
+  wxUserPage();
   if(isset($_POST['fun']) && $_POST['fun'] == 'comment'){
     $db = new database();
     if(!empty($_POST['comment'])){
