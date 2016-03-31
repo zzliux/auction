@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin:*");
+// header("Access-Control-Allow-Origin:*");
 require_once(__DIR__.'/class/database.class.php');
 require_once(__DIR__.'/functions/common.func.php');
 if($_GET['f'] === 'getAllItem'){
